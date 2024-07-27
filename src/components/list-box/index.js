@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ListBox = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -13,6 +15,10 @@ const ListBox = () => {
         method: "POST",
         body: JSON.stringify(formData),
       });
+      const result = await apiResponse.json();
+      if (result?.success) {
+        router.refresh();
+      }
     } catch (error) {}
     // body data = formData
   }
