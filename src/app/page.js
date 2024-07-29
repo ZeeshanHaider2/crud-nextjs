@@ -1,5 +1,5 @@
 import ListBox from "@/components/list-box";
-import ListShow from "@/components/list-box/list-show";
+import ListShow from "@/components/list-show";
 import Image from "next/image";
 
 export default function Home() {

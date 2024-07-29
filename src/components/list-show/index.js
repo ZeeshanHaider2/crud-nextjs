@@ -1,5 +1,5 @@
 import React from "react";
-
+import ListCard from "../list-card";
 async function getListData() {
   const fetchList = await fetch("http://localhost:3000/api/list", {
     method: "GET",
@@ -16,9 +16,11 @@ const ListShow = async () => {
   console.log("listdata", listData);
 
   return (
-    <div>
-      {listData.map((list, id) => (
-        <div key={list?.id}>{list?.title}</div>
+    <div className="flex flex-wrap gap-10 mt-6">
+      {listData.map((list) => (
+        <div key={list?.id}>
+          <ListCard list={list} />
+        </div>
       ))}
     </div>
   );
