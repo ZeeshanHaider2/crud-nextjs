@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import React from "react";
 import {
   Card,
@@ -11,22 +13,78 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 export function ButtonDemo() {
   return <Button>Button</Button>;
 }
 
 const ListCard = ({ list }) => {
+  const [openListDialog, setOpenListDialog] = useState(false);
+  const [editData, setEditData] = useState({
+    title: list.title,
+    description: list.description,
+  });
   return (
     <Card className="w-[300px] h-auto bg-gray-950 text-white">
       <CardHeader>
         <CardTitle>{list?.title}</CardTitle>
         <CardDescription>{list?.description}</CardDescription>
       </CardHeader>
-      <CardContent></CardContent>
-      <CardFooter className="flex gap-2">
-        <Button variant="secondary">Edit</Button>
-        <Button variant="destructive">Deploy</Button>
-      </CardFooter>
+      <CardContent>
+        {/*Edit button */}
+        <Button variant="secondary" onClick={() => setOpenListDialog(true)}>
+          Edit
+        </Button>
+        {/*Dialog */}
+        <Dialog open={openListDialog}>
+          <DialogContent className="sm:max-w-[425px] bg-gray-900">
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="title" className="text-right">
+                  Title
+                </Label>
+                <Input
+                  onChange={(e) =>
+                    setEditData({ ...editData, title: e.target.value })
+                  }
+                  value={editData.title}
+                  id="title"
+                  className="col-span-3 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="description" className="text-right">
+                  Description
+                </Label>
+                <textarea
+                  onChange={(e) =>
+                    setEditData({ ...editData, description: e.target.value })
+                  }
+                  value={editData.description}
+                  id="description"
+                  className="col-span-3 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit" onClick={() => handleEdit()}>
+                Save changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        {/*Delete button */}
+        <Button variant="destructive">Delete</Button>
+      </CardContent>
     </Card>
   );
 };
