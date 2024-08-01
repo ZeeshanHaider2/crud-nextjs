@@ -52,3 +52,30 @@ export async function GET() {
     NextResponse.json({ success: false, message: "An error occoured" });
   }
 }
+
+//PUT Request
+export async function PUT(req) {
+  const { searchParams } = new URL(req.url);
+  const currentListId = searchParams.get("id");
+  const data = await req.json();
+
+  try {
+    const updatedList = await prisma.list.update({
+      where: {
+        id: currentListId,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+      },
+    });
+    if (updatedList) {
+      return NextResponse.json({
+        success: true,
+        message: "Updated successfully",
+      });
+    }
+  } catch (error) {
+    NextResponse.json({ success: false, message: "An error occoured" });
+  }
+}

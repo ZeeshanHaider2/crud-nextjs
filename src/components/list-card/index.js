@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import React from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -23,16 +23,28 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export function ButtonDemo() {
-  return <Button>Button</Button>;
-}
-
 const ListCard = ({ list }) => {
+  const router = useRouter();
   const [openListDialog, setOpenListDialog] = useState(false);
   const [editData, setEditData] = useState({
     title: list.title,
     description: list.description,
   });
+  async function handleEdit() {
+    try {
+      const apiResponse = await fetch(`/api/list?id=${list.id}`, {
+        method: "PUT",
+        body: JSON.stringify(editData),
+      });
+      const result = await apiResponse.json();
+      setOpenListDialog(false);
+      if (result?.success) {
+        router.refresh("/");
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
   return (
     <Card className="w-[300px] h-auto bg-gray-950 text-white">
       <CardHeader>
