@@ -45,6 +45,19 @@ const ListCard = ({ list }) => {
       console.log("error", error);
     }
   }
+  async function handleDelete() {
+    try {
+      const apiResponse = await fetch(`/api/list?id=${list.id}`, {
+        method: "Delete",
+      });
+      const result = await apiResponse.json();
+      if (result?.success) {
+        router.refresh("/");
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
   return (
     <Card className="w-[300px] h-auto bg-gray-950 text-white">
       <CardHeader>
@@ -95,7 +108,9 @@ const ListCard = ({ list }) => {
           </DialogContent>
         </Dialog>
         {/*Delete button */}
-        <Button variant="destructive">Delete</Button>
+        <Button variant="destructive" onClick={() => handleDelete()}>
+          Delete
+        </Button>
       </CardContent>
     </Card>
   );

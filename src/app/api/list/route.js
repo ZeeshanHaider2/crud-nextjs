@@ -79,3 +79,25 @@ export async function PUT(req) {
     NextResponse.json({ success: false, message: "An error occoured" });
   }
 }
+
+//Delete Request
+export async function DELETE(req) {
+  const { searchParams } = new URL(req.url);
+  const currentListId = searchParams.get("id");
+
+  try {
+    const deleteList = await prisma.list.delete({
+      where: {
+        id: currentListId,
+      },
+    });
+    if (deleteList) {
+      return NextResponse.json({
+        success: true,
+        message: "Deleted successfully",
+      });
+    }
+  } catch (error) {
+    return NextResponse.json({ success: false, message: error.massage });
+  }
+}
